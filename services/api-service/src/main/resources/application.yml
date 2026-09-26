@@ -1,0 +1,89 @@
+spring:
+  application:
+    name: flakehunter-api
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/flakehunter}
+    username: ${DB_USERNAME:flakehunter}
+    password: ${DB_PASSWORD:flakehunter}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cache:
+    type: ${CACHE_TYPE:redis}
+    redis:
+      time-to-live: 10m
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 15000
+        request.timeout.ms: 10000
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
+  mvc:
+    problemdetails:
+      enabled: true
+
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    redis:
+      enabled: ${REDIS_HEALTH_ENABLED:true}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+flakehunter:
+  analysis:
+    window-size: 30
+    decay: 0.9
+    min-runs: 5
+    flaky-threshold: 0.3
+    broken-streak: 3
+  ingestion:
+    max-report-bytes: 5242880
+    max-failure-message-length: 4000
+  rate-limit:
+    enabled: true
+    capacity: 120
+    refill-per-second: 2.0
+  outbox:
+    enabled: ${OUTBOX_ENABLED:true}
+    topic: flakehunter.test-runs.v1
+    poll-interval-ms: 1000
+    batch-size: 100

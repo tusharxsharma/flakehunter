@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites name="pytest tests">
+  <testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="1,234.5" timestamp="2026-09-26T10:00:00" hostname="ci-runner-7">
+    <testcase classname="tests.test_payments" name="test_refund_is_idempotent" time="0.051"/>
+    <testcase classname="tests.test_payments" name="test_charge[visa]" time="0.20"/>
+    <testcase classname="tests.test_payments" name="test_charge[amex]" time="0.31">
+      <failure message="AssertionError: assert 402 == 200">def test_charge(card):
+&gt;       assert response.status_code == 200
+E       AssertionError: assert 402 == 200</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

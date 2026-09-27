@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="2.1">
+  <testsuite name="LoginForm" file="src/components/LoginForm.test.tsx" tests="2" time="1.1">
+    <testsuite name="validation">
+      <testcase name="shows an error for an empty email" time="0.3"/>
+    </testsuite>
+    <testcase name="submits credentials" time="0.8"/>
+  </testsuite>
+  <testsuite name="utils" tests="1" time="1.0">
+    <testcase name="formats currency" classname="" time="not-a-number"/>
+  </testsuite>
+</testsuites>

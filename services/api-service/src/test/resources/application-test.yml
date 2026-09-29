@@ -1,0 +1,23 @@
+spring:
+  cache:
+    type: simple
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:65535}
+  main:
+    banner-mode: off
+
+management:
+  health:
+    redis:
+      enabled: false
+
+flakehunter:
+  rate-limit:
+    enabled: false
+  outbox:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    io.flakehunter: WARN

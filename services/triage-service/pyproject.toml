@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flakehunter-triage"
+version = "1.0.0"
+description = "Consumes FlakeHunter test-run events from Kafka, clusters failures by fingerprint and classifies root causes (heuristics + Claude)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "fastapi>=0.141,<1",
+    "uvicorn[standard]>=0.54,<1",
+    "sqlalchemy>=2.0.50,<3",
+    "psycopg[binary]>=3.3,<4",
+    "confluent-kafka>=2.15,<3",
+    "anthropic>=1.8,<2",
+    "pydantic>=2.13,<3",
+    "prometheus-client>=0.26,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.1",
+    "pytest-cov>=7",
+    "httpx>=0.28",
+    "ruff>=0.16",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --cov=triage --cov-report=term-missing --cov-fail-under=90"
+markers = [
+    "integration: needs a running Kafka broker (run in CI via docker compose)",
+]
+
+[tool.coverage.run]
+omit = ["src/triage/__main__.py"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "PL", "RUF"]
+ignore = ["PLR0913", "PLR2004", "PLR0911"]

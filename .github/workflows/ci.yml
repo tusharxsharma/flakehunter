@@ -71,3 +71,30 @@ jobs:
         with:
           name: triage-service-tests
           path: services/triage-service/reports/junit.xml
+
+  dashboard:
+    name: Dashboard · React
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - name: Unit/component tests + coverage gate
+        run: npx vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=reports/junit.xml
+      - name: Type check + production build
+        run: npm run build
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dashboard-tests
+          path: dashboard/reports/junit.xml

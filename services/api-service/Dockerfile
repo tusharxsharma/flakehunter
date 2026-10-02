@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---------- Build stage: compile and package with Maven ----------
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:24-jdk AS build
 WORKDIR /workspace
 
 # Copy only the build definition first: this layer (all dependencies) stays cached
@@ -15,7 +15,7 @@ RUN ./mvnw -B -q package -DskipTests \
  && java -Djarmode=tools -jar target/api-service-*.jar extract --layers --launcher --destination target/extracted
 
 # ---------- Runtime stage: JRE only, non-root, layered ----------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:24-jre
 RUN groupadd --system app && useradd --system --gid app --uid 1001 app
 WORKDIR /app
 

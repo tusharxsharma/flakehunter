@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TestAnalysisResponse[]",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["testId", "testKey", "suite", "name", "quarantined", "verdict", "score", "flipRate",
+                 "failureRate", "inconsistentCommits", "runsAnalyzed", "lastStatus"],
+    "properties": {
+      "testId": { "type": "integer" },
+      "testKey": { "type": "string" },
+      "suite": { "type": "string" },
+      "name": { "type": "string" },
+      "file": { "type": ["string", "null"] },
+      "quarantined": { "type": "boolean" },
+      "quarantineReason": { "type": ["string", "null"] },
+      "verdict": { "enum": ["STABLE", "FLAKY", "BROKEN", "INSUFFICIENT_DATA"] },
+      "score": { "type": "number", "minimum": 0, "maximum": 1 },
+      "flipRate": { "type": "number", "minimum": 0, "maximum": 1 },
+      "failureRate": { "type": "number", "minimum": 0, "maximum": 1 },
+      "inconsistentCommits": { "type": "integer", "minimum": 0 },
+      "runsAnalyzed": { "type": "integer", "minimum": 0 },
+      "lastStatus": { "enum": ["PASSED", "FAILED", "SKIPPED", null] }
+    }
+  }
+}

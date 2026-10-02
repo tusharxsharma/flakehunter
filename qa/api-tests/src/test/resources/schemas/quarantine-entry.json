@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QuarantineEntryResponse",
+  "type": "object",
+  "required": ["testId", "testKey", "suite", "name", "reason", "quarantinedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "testId": { "type": "integer" },
+    "testKey": { "type": "string" },
+    "suite": { "type": "string" },
+    "name": { "type": "string" },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "quarantinedAt": { "type": "string" }
+  }
+}

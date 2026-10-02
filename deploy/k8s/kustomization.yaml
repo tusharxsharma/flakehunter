@@ -1,0 +1,22 @@
+# kubectl apply -k deploy/k8s
+# Assumes managed PostgreSQL, Redis and Kafka (e.g. RDS, ElastiCache, MSK) whose endpoints go in the ConfigMap.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: flakehunter
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - api.yaml
+  - triage.yaml
+  - dashboard.yaml
+  - ingress.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: flakehunter
+images:
+  - name: flakehunter/api-service
+    newTag: "1.0.0"
+  - name: flakehunter/triage-service
+    newTag: "1.0.0"
+  - name: flakehunter/dashboard
+    newTag: "1.0.0"

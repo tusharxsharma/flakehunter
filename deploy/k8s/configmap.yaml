@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flakehunter-config
+data:
+  DB_URL: jdbc:postgresql://postgres.internal:5432/flakehunter
+  REDIS_HOST: redis.internal
+  KAFKA_BOOTSTRAP_SERVERS: kafka.internal:9092
+---
+# Secrets are created out-of-band (e.g. External Secrets Operator or sealed-secrets), never committed:
+#   kubectl -n flakehunter create secret generic flakehunter-secrets \
+#     --from-literal=DB_USERNAME=... --from-literal=DB_PASSWORD=... \
+#     --from-literal=TRIAGE_DATABASE_URL=postgresql+psycopg://... \
+#     --from-literal=ANTHROPIC_API_KEY=...

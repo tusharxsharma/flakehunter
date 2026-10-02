@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flakehunter
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: flakehunter.example.com
+      http:
+        paths:
+          # The dashboard's own nginx routes /api and /triage to the backend Services.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard
+                port:
+                  name: http

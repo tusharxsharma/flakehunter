@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triage
+  labels:
+    app.kubernetes.io/name: triage
+spec:
+  # Scale up to the topic's partition count (3): Kafka assigns each partition to one consumer in the group.
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: triage
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: triage
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: triage
+          image: flakehunter/triage-service
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef: { name: flakehunter-config, key: KAFKA_BOOTSTRAP_SERVERS }
+            - name: TRIAGE_DATABASE_URL
+              valueFrom:
+                secretKeyRef: { name: flakehunter-secrets, key: TRIAGE_DATABASE_URL }
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef: { name: flakehunter-secrets, key: ANTHROPIC_API_KEY, optional: true }
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { memory: 512Mi }
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: triage
+spec:
+  selector:
+    app.kubernetes.io/name: triage
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http

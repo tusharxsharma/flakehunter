@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directories: ["/services/api-service", "/qa/api-tests"]
+    schedule: { interval: weekly }
+    groups:
+      maven: { patterns: ["*"] }
+
+  - package-ecosystem: pip
+    directory: /services/triage-service
+    schedule: { interval: weekly }
+
+  - package-ecosystem: npm
+    directories: ["/dashboard", "/qa/e2e-tests"]
+    schedule: { interval: weekly }
+    groups:
+      npm: { patterns: ["*"] }
+
+  - package-ecosystem: docker
+    directories: ["/services/api-service", "/services/triage-service", "/dashboard"]
+    schedule: { interval: monthly }
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: monthly }

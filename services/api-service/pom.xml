@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
         <relativePath/>
     </parent>
 
@@ -18,11 +18,11 @@
 
     <properties>
         <java.version>21</java.version>
-        <springdoc.version>3.1.1</springdoc.version>
-        <jqwik.version>1.10.1</jqwik.version>
+        <springdoc.version>3.2.0</springdoc.version>
+        <jqwik.version>1.10.2</jqwik.version>
         <embedded-postgres.version>2.2.2</embedded-postgres.version>
         <embedded-postgres-binaries.version>18.6.0</embedded-postgres-binaries.version>
-        <jacoco.version>0.8.15</jacoco.version>
+        <jacoco.version>0.8.16</jacoco.version>
         <!-- Build fails if line coverage drops below this ratio -->
         <coverage.minimum>0.85</coverage.minimum>
     </properties>
